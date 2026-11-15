@@ -1,0 +1,7 @@
+intersection_id,report_period,period,reported_value,unit,source_document,data_origin,limitations
+HUDSON_CIRCLE,2024-12,morning_peak,9270,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.
+HUDSON_CIRCLE,2024-12,evening_peak,9419,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.
+LALBAGH_WEST,2024-12,morning_peak,8804,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.
+LALBAGH_WEST,2024-12,evening_peak,8859,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.
+MINERVA_CIRCLE,2024-12,morning_peak,8383,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.
+MINERVA_CIRCLE,2024-12,evening_peak,7649,PCU_per_hour,"BBMP Comprehensive Traffic Management Plan, Dec 2024",published_aggregate_reference,Not raw vehicle count; not disaggregated turning movements.

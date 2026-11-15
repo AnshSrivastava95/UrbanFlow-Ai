@@ -1,0 +1,10 @@
+file,field,unit,provenance,definition_and_limitations
+bus_observations.csv,segment_travel_time_min,minutes,Synthetic,Bus segment travel time; generated for pipeline testing.
+bus_observations.csv,average_speed_kmh,km/h,Synthetic,Synthetic segment average speed.
+turning_movements.csv,vehicle_count_per_hour,vehicles/hour,Synthetic,Synthetic turning count; NOT measured BBMP count.
+turning_movements.csv,pcu_per_hour,PCU/hour,Synthetic,Synthetic PCU equivalent by movement.
+traffic_observations.csv,total_pcu_per_hour,PCU/hour,Synthetic,Synthetic time-window traffic demand.
+published_reference_counts.csv,reported_value,PCU/hour,Published aggregate reference,Aggregate peak-hour values transcribed from BBMP report summary; not turning movements.
+vehicle_composition.csv,vehicle_count_in_sample,vehicles/image sample,Synthetic,Synthetic vehicle composition samples.
+intersection_geometry.csv,illustrative_inscribed_diameter_m,metres,Conceptual placeholder,Not a surveyed or approved design dimension.
+simulation_scenarios.csv,total_demand_veh_per_hour,vehicles/hour,Synthetic experimental design,Demand levels for controlled SUMO experiments.
