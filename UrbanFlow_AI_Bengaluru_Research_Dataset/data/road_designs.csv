@@ -1,0 +1,6 @@
+design_id,design_type,role,constraints,status
+signalised_baseline,signalised_intersection,baseline comparator,requires calibrated signal timings,candidate_only
+single_lane_roundabout,roundabout,signal-free candidate,requires capacity and pedestrian safety checks,candidate_only
+turbo_roundabout,turbo_roundabout,signal-free candidate,requires lane discipline and geometry checks,candidate_only
+continuous_flow_intersection,CFI,may retain signal control for some movements,not automatically signal-free; check every conflict,candidate_only
+grade_separated,grade_separation,potentially signal-free mainline,"requires land, cost, merge and pedestrian assessment",candidate_only

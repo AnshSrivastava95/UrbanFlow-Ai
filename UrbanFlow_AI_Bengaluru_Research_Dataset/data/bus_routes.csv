@@ -1,0 +1,6 @@
+route_id,city,route_status,route_length_km,stop_count,data_origin
+BMTC_ROUTE_A,Bengaluru,synthetic_route_placeholder,18.4,42,synthetic
+BMTC_ROUTE_B,Bengaluru,synthetic_route_placeholder,14.7,35,synthetic
+BMTC_ROUTE_C,Bengaluru,synthetic_route_placeholder,22.1,51,synthetic
+BMTC_ROUTE_D,Bengaluru,synthetic_route_placeholder,11.8,29,synthetic
+BMTC_ROUTE_E,Bengaluru,synthetic_route_placeholder,26.3,59,synthetic

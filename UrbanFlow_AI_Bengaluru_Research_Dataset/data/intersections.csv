@@ -1,0 +1,4 @@
+intersection_id,intersection_name,city,state,latitude_approx,longitude_approx,approach_count_assumed,selection_status,geometry_note,data_origin
+HUDSON_CIRCLE,Hudson Circle,Bengaluru,Karnataka,12.9667,77.5963,4,candidate,Location/approach geometry must be verified against current OSM and field survey.,candidate_locations_not_surveyed_geometry
+LALBAGH_WEST,Lalbagh West Gate Junction,Bengaluru,Karnataka,12.953,77.586,4,candidate,Location/approach geometry must be verified against current OSM and field survey.,candidate_locations_not_surveyed_geometry
+MINERVA_CIRCLE,Minerva Circle,Bengaluru,Karnataka,12.959,77.583,4,candidate,Location/approach geometry must be verified against current OSM and field survey.,candidate_locations_not_surveyed_geometry

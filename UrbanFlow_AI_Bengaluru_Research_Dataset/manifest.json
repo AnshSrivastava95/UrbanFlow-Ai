@@ -1,0 +1,59 @@
+{
+  "project": "UrbanFlow AI",
+  "city": "Bengaluru, Karnataka, India",
+  "created_utc": "2026-11-15",
+  "random_seed": 20261115,
+  "synthetic_rows_are_not_real_observations": true,
+  "max_user_requested_size_gb": 10,
+  "tables": {
+    "intersections.csv": {
+      "rows": 3,
+      "columns": 10
+    },
+    "published_reference_counts.csv": {
+      "rows": 6,
+      "columns": 8
+    },
+    "bus_routes.csv": {
+      "rows": 5,
+      "columns": 6
+    },
+    "bus_observations.csv": {
+      "rows": 6000,
+      "columns": 12
+    },
+    "turning_movements.csv": {
+      "rows": 2016,
+      "columns": 10
+    },
+    "vehicle_composition.csv": {
+      "rows": 1008,
+      "columns": 8
+    },
+    "traffic_observations.csv": {
+      "rows": 360,
+      "columns": 12
+    },
+    "intersection_geometry.csv": {
+      "rows": 8,
+      "columns": 8
+    },
+    "simulation_scenarios.csv": {
+      "rows": 100,
+      "columns": 8
+    },
+    "road_designs.csv": {
+      "rows": 5,
+      "columns": 5
+    },
+    "data_dictionary.csv": {
+      "rows": 9,
+      "columns": 5
+    }
+  },
+  "notes": [
+    "Most observation-level rows are synthetic for pipeline testing.",
+    "Published BBMP reference values are aggregate PCU/hour figures, not turning movements.",
+    "Intersection coordinates and design dimensions are approximate/conceptual and require verification."
+  ]
+}
