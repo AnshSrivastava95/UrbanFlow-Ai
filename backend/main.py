@@ -2,7 +2,9 @@
 import os
 import json
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
+from threading import RLock
 
 import numpy as np
 import pandas as pd
@@ -399,72 +401,99 @@ def get_routes(
 
 
 # --------------------------------------------------
-# STATIC GTFS SCHEDULE DATA
+# STATIC GTFS SCHEDULE DATA (MEMORY-EFFICIENT)
 # --------------------------------------------------
 
+# Keep only the relatively small GTFS lookup tables in memory. In particular,
+# do NOT load the multi-million-row stop_times.txt into a DataFrame.
 _GTFS_CACHE = None
 _GTFS_ERROR = None
+_GTFS_LOCK = RLock()
+
+# Cache a small number of route-specific stop-time subsets. This avoids
+# repeatedly scanning stop_times.txt when a user changes the selected stop or
+# service date for a route, while keeping memory use bounded.
+ROUTE_SCHEDULE_CACHE_SIZE = 8
+GTFS_CHUNK_SIZE = 100_000
 
 
 def load_gtfs_tables():
-    """Load the static BMTC GTFS tables once, when first requested."""
+    """Load small GTFS lookup tables once; stop_times is streamed separately."""
     global _GTFS_CACHE, _GTFS_ERROR
 
     if _GTFS_CACHE is not None:
         return _GTFS_CACHE
 
-    required = ["routes.txt", "trips.txt", "stop_times.txt", "stops.txt"]
-    missing = [name for name in required if not (GTFS_DIR / name).exists()]
-    if missing:
-        _GTFS_ERROR = (
-            f"GTFS files not found in {GTFS_DIR}. Missing: {', '.join(missing)}"
-        )
-        raise HTTPException(status_code=503, detail=_GTFS_ERROR)
+    with _GTFS_LOCK:
+        if _GTFS_CACHE is not None:
+            return _GTFS_CACHE
 
-    try:
-        tables = {
-            name[:-4]: pd.read_csv(
-                GTFS_DIR / name,
-                dtype=str,
-                keep_default_na=False,
-                low_memory=False,
+        required = ["routes.txt", "trips.txt", "stops.txt", "stop_times.txt"]
+        missing = [name for name in required if not (GTFS_DIR / name).exists()]
+        if missing:
+            _GTFS_ERROR = (
+                f"GTFS files not found in {GTFS_DIR}. Missing: {', '.join(missing)}"
             )
-            for name in required
-        }
+            raise HTTPException(status_code=503, detail=_GTFS_ERROR)
 
-        calendar_path = GTFS_DIR / "calendar.txt"
-        calendar_dates_path = GTFS_DIR / "calendar_dates.txt"
-        tables["calendar"] = (
-            pd.read_csv(calendar_path, dtype=str, keep_default_na=False)
-            if calendar_path.exists() else pd.DataFrame()
-        )
-        tables["calendar_dates"] = (
-            pd.read_csv(calendar_dates_path, dtype=str, keep_default_na=False)
-            if calendar_dates_path.exists() else pd.DataFrame()
-        )
+        try:
+            tables = {
+                "routes": pd.read_csv(
+                    GTFS_DIR / "routes.txt",
+                    dtype=str,
+                    keep_default_na=False,
+                    usecols=lambda column: column in {
+                        "route_id", "route_short_name", "route_long_name", "route_type"
+                    },
+                ),
+                "trips": pd.read_csv(
+                    GTFS_DIR / "trips.txt",
+                    dtype=str,
+                    keep_default_na=False,
+                    usecols=lambda column: column in {"route_id", "service_id", "trip_id"},
+                ),
+                "stops": pd.read_csv(
+                    GTFS_DIR / "stops.txt",
+                    dtype=str,
+                    keep_default_na=False,
+                    usecols=lambda column: column in {
+                        "stop_id", "stop_name", "stop_code", "stop_lat", "stop_lon"
+                    },
+                ),
+            }
 
-        # Normalize identifiers to strings and verify essential GTFS columns.
-        expected = {
-            "routes": ["route_id"],
-            "trips": ["route_id", "service_id", "trip_id"],
-            "stop_times": ["trip_id", "stop_id", "stop_sequence", "departure_time"],
-            "stops": ["stop_id", "stop_name"],
-        }
-        for table_name, columns in expected.items():
-            absent = [col for col in columns if col not in tables[table_name].columns]
-            if absent:
-                raise ValueError(f"{table_name}.txt is missing columns: {absent}")
+            calendar_path = GTFS_DIR / "calendar.txt"
+            calendar_dates_path = GTFS_DIR / "calendar_dates.txt"
+            tables["calendar"] = (
+                pd.read_csv(calendar_path, dtype=str, keep_default_na=False)
+                if calendar_path.exists() else pd.DataFrame()
+            )
+            tables["calendar_dates"] = (
+                pd.read_csv(calendar_dates_path, dtype=str, keep_default_na=False)
+                if calendar_dates_path.exists() else pd.DataFrame()
+            )
 
-        _GTFS_CACHE = tables
-        return _GTFS_CACHE
-    except HTTPException:
-        raise
-    except Exception as exc:
-        _GTFS_ERROR = str(exc)
-        raise HTTPException(
-            status_code=503,
-            detail=f"Unable to read the BMTC GTFS schedule files: {_GTFS_ERROR}",
-        )
+            expected = {
+                "routes": ["route_id"],
+                "trips": ["route_id", "service_id", "trip_id"],
+                "stops": ["stop_id", "stop_name"],
+            }
+            for table_name, columns in expected.items():
+                absent = [col for col in columns if col not in tables[table_name].columns]
+                if absent:
+                    raise ValueError(f"{table_name}.txt is missing columns: {absent}")
+
+            _GTFS_CACHE = tables
+            _GTFS_ERROR = None
+            return _GTFS_CACHE
+        except HTTPException:
+            raise
+        except Exception as exc:
+            _GTFS_ERROR = str(exc)
+            raise HTTPException(
+                status_code=503,
+                detail=f"Unable to read the BMTC GTFS lookup files: {_GTFS_ERROR}",
+            )
 
 
 def gtfs_time_to_seconds(value):
@@ -524,51 +553,106 @@ def active_service_ids(tables, service_date):
     return active
 
 
-def route_gtfs_stops(tables, route_id):
-    trips = tables["trips"]
-    route_trips = trips[trips["route_id"] == str(route_id)]
-    if route_trips.empty:
+@lru_cache(maxsize=ROUTE_SCHEDULE_CACHE_SIZE)
+def load_route_stop_times(route_id):
+    """Stream stop_times.txt and retain only rows belonging to one route.
+
+    The complete 2M+ row file is never materialized in memory. The returned
+    DataFrame contains only four columns and only trips for the requested route.
+    The LRU cache retains at most ROUTE_SCHEDULE_CACHE_SIZE route subsets.
+    """
+    tables = load_gtfs_tables()
+    route_id = str(route_id)
+    route_trips = tables["trips"].loc[
+        tables["trips"]["route_id"] == route_id, "trip_id"
+    ]
+    trip_ids = set(route_trips.tolist())
+    if not trip_ids:
+        return pd.DataFrame(
+            columns=["trip_id", "stop_id", "stop_sequence", "departure_time"]
+        )
+
+    stop_times_path = GTFS_DIR / "stop_times.txt"
+    selected_chunks = []
+    required_columns = {"trip_id", "stop_id", "stop_sequence", "departure_time"}
+
+    try:
+        # Inspect only the header first, so a malformed feed produces a useful
+        # error instead of a confusing pandas usecols exception.
+        header = pd.read_csv(stop_times_path, nrows=0).columns.tolist()
+        absent = sorted(required_columns.difference(header))
+        if absent:
+            raise ValueError(f"stop_times.txt is missing columns: {absent}")
+
+        for chunk in pd.read_csv(
+            stop_times_path,
+            usecols=["trip_id", "stop_id", "stop_sequence", "departure_time"],
+            dtype=str,
+            keep_default_na=False,
+            chunksize=GTFS_CHUNK_SIZE,
+        ):
+            matching = chunk[chunk["trip_id"].isin(trip_ids)]
+            if not matching.empty:
+                selected_chunks.append(matching)
+
+        if selected_chunks:
+            route_rows = pd.concat(selected_chunks, ignore_index=True)
+            route_rows["stop_sequence"] = pd.to_numeric(
+                route_rows["stop_sequence"], errors="coerce"
+            )
+            route_rows = route_rows.dropna(subset=["stop_sequence"])
+            route_rows["stop_sequence"] = route_rows["stop_sequence"].astype("int32")
+            return route_rows
+
+        return pd.DataFrame(
+            columns=["trip_id", "stop_id", "stop_sequence", "departure_time"]
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Unable to stream BMTC stop_times.txt: {exc}",
+        )
+
+
+def route_gtfs_stops(tables, route_id, route_stop_times=None):
+    """Return route stops ordered by their earliest stop_sequence."""
+    if route_stop_times is None:
+        route_stop_times = load_route_stop_times(str(route_id))
+    if route_stop_times.empty:
         return []
 
-    stop_times = tables["stop_times"]
-    stop_rows = stop_times[
-        stop_times["trip_id"].isin(route_trips["trip_id"])
-    ][["stop_id", "stop_sequence"]].copy()
-
-    if stop_rows.empty:
-        return []
-
-    stop_rows["stop_sequence"] = pd.to_numeric(
-        stop_rows["stop_sequence"], errors="coerce"
-    )
-    ordered_ids = (
-        stop_rows.sort_values("stop_sequence")["stop_id"]
+    ordered = (
+        route_stop_times.sort_values("stop_sequence", kind="stable")["stop_id"]
         .drop_duplicates()
         .tolist()
     )
-
-    stops = tables["stops"].set_index("stop_id", drop=False)
+    stops_frame = tables["stops"].drop_duplicates("stop_id").set_index("stop_id")
     result = []
-    for stop_id in ordered_ids:
-        if stop_id in stops.index:
-            row = stops.loc[stop_id]
-            if isinstance(row, pd.DataFrame):
-                row = row.iloc[0]
-            result.append({
-                "stop_id": str(stop_id),
-                "stop_name": str(row.get("stop_name", "")),
-                "stop_code": str(row.get("stop_code", "")) or None,
-                "stop_lat": (
-                    float(row["stop_lat"])
-                    if row.get("stop_lat") not in (None, "")
-                    else None
-                ),
-                "stop_lon": (
-                    float(row["stop_lon"])
-                    if row.get("stop_lon") not in (None, "")
-                    else None
-                ),
-            })
+
+    for stop_id in ordered:
+        if stop_id not in stops_frame.index:
+            continue
+        row = stops_frame.loc[stop_id]
+
+        def optional_float(column):
+            value = row.get(column, "")
+            if value in (None, ""):
+                return None
+            try:
+                return float(value)
+            except (TypeError, ValueError):
+                return None
+
+        result.append({
+            "stop_id": str(stop_id),
+            "stop_name": str(row.get("stop_name", "")),
+            "stop_code": str(row.get("stop_code", "")) or None,
+            "stop_lat": optional_float("stop_lat"),
+            "stop_lon": optional_float("stop_lon"),
+        })
+
     return result
 
 
@@ -580,12 +664,17 @@ def route_schedule_payload(route_id, service_date, stop_id=None):
     if route_rows.empty:
         raise HTTPException(status_code=404, detail="Route not found in GTFS feed.")
 
-    trips = tables["trips"]
-    route_trips = trips[trips["route_id"] == route_id].copy()
+    route_trips = tables["trips"].loc[
+        tables["trips"]["route_id"] == route_id
+    ].copy()
     if route_trips.empty:
         raise HTTPException(status_code=404, detail="No trips found for this route.")
 
-    stops = route_gtfs_stops(tables, route_id)
+    # This scans stop_times in bounded chunks only on the first request for a
+    # route. Later requests for that route use the small route-specific cache.
+    route_stop_times = load_route_stop_times(route_id)
+    stops = route_gtfs_stops(tables, route_id, route_stop_times)
+
     route_row = route_rows.iloc[0]
     route_info = {
         "route_id": route_id,
@@ -621,17 +710,17 @@ def route_schedule_payload(route_id, service_date, stop_id=None):
             detail="The selected stop is not served by this route.",
         )
 
-    stop_times = tables["stop_times"]
-    selected = stop_times[
-        stop_times["trip_id"].isin(active_trips["trip_id"])
-        & (stop_times["stop_id"] == str(stop_id))
+    active_trip_ids = set(active_trips["trip_id"].tolist())
+    selected = route_stop_times.loc[
+        route_stop_times["trip_id"].isin(active_trip_ids)
+        & (route_stop_times["stop_id"] == str(stop_id))
     ].copy()
 
     selected["departure_seconds"] = selected["departure_time"].map(
         gtfs_time_to_seconds
     )
     selected = selected.dropna(subset=["departure_seconds"])
-    selected = selected.sort_values("departure_seconds")
+    selected = selected.sort_values("departure_seconds", kind="stable")
 
     seconds = selected["departure_seconds"].astype(int).tolist()
     departures = []
@@ -649,7 +738,6 @@ def route_schedule_payload(route_id, service_date, stop_id=None):
 
     result["departures"] = departures
 
-    # Count scheduled departures in local clock-hour buckets.
     hourly = {}
     for departure in departures:
         hour = int(departure["departure_time"].split(":")[0]) % 24
