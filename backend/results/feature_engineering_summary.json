@@ -1,0 +1,17 @@
+{
+    "routes_processed": 5063,
+    "trips_processed": 69642,
+    "routes_with_trips": 5063,
+    "routes_without_trips": 0,
+    "features": [
+        "trip_count",
+        "unique_stop_count",
+        "avg_stops_per_trip",
+        "avg_trip_duration_min",
+        "avg_departure_hour",
+        "morning_peak_share",
+        "evening_peak_share"
+    ],
+    "output_file": "C:\\Users\\anshs\\OneDrive\\Desktop\\urbanflow ai\\backend\\results\\route_features.csv",
+    "interpretation": "Scheduled service features, not observed traffic measurements."
+}

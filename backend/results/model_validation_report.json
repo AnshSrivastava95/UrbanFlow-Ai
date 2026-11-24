@@ -1,0 +1,124 @@
+{
+    "dataset_routes": 5063,
+    "features": [
+        "trip_count",
+        "unique_stop_count",
+        "avg_stops_per_trip",
+        "avg_trip_duration_min",
+        "avg_departure_hour",
+        "morning_peak_share",
+        "evening_peak_share"
+    ],
+    "cluster_count": 5,
+    "feature_importance": [
+        {
+            "feature": "trip_count",
+            "f_score": 3012.057348166956,
+            "p_value": 0.0,
+            "eta_squared": 0.7043182408060078
+        },
+        {
+            "feature": "morning_peak_share",
+            "f_score": 2115.6719910229413,
+            "p_value": 0.0,
+            "eta_squared": 0.6259066096760008
+        },
+        {
+            "feature": "unique_stop_count",
+            "f_score": 1732.7041887187784,
+            "p_value": 0.0,
+            "eta_squared": 0.5781068220979171
+        },
+        {
+            "feature": "evening_peak_share",
+            "f_score": 1713.0735159427488,
+            "p_value": 0.0,
+            "eta_squared": 0.5753253468874862
+        },
+        {
+            "feature": "avg_stops_per_trip",
+            "f_score": 1463.4071497497969,
+            "p_value": 0.0,
+            "eta_squared": 0.5364578299096532
+        },
+        {
+            "feature": "avg_trip_duration_min",
+            "f_score": 1258.5987312698196,
+            "p_value": 0.0,
+            "eta_squared": 0.4988305513658578
+        },
+        {
+            "feature": "avg_departure_hour",
+            "f_score": 970.8834455954218,
+            "p_value": 0.0,
+            "eta_squared": 0.4343252373584779
+        }
+    ],
+    "scaler_sensitivity": {
+        "standard_model": {
+            "model": "KMeans StandardScaler",
+            "actual_clusters": 5,
+            "silhouette": 0.3284594235824392,
+            "davies_bouldin": 0.9802045562923715,
+            "minimum_cluster_size": 132,
+            "maximum_cluster_size": 2368,
+            "cluster_sizes": [
+                2368,
+                442,
+                388,
+                1733,
+                132
+            ]
+        },
+        "robust_model": {
+            "model": "KMeans RobustScaler",
+            "actual_clusters": 5,
+            "silhouette": 0.2699081437892493,
+            "davies_bouldin": 0.9569647142935762,
+            "minimum_cluster_size": 47,
+            "maximum_cluster_size": 3243,
+            "cluster_sizes": [
+                372,
+                116,
+                3243,
+                47,
+                1285
+            ]
+        },
+        "adjusted_rand_index": 0.1007772410418269
+    },
+    "algorithm_comparison": {
+        "kmeans": {
+            "model": "KMeans K=5",
+            "actual_clusters": 5,
+            "silhouette": 0.3284594235824392,
+            "davies_bouldin": 0.9802045562923715,
+            "minimum_cluster_size": 132,
+            "maximum_cluster_size": 2368,
+            "cluster_sizes": [
+                2368,
+                442,
+                388,
+                1733,
+                132
+            ]
+        },
+        "hierarchical_ward": {
+            "model": "Hierarchical Ward K=5",
+            "actual_clusters": 5,
+            "silhouette": 0.29284695911829456,
+            "davies_bouldin": 1.0691260424385436,
+            "minimum_cluster_size": 199,
+            "maximum_cluster_size": 2378,
+            "cluster_sizes": [
+                2378,
+                589,
+                199,
+                304,
+                1593
+            ]
+        },
+        "adjusted_rand_index": 0.6748639046951789
+    },
+    "interpretation": "Feature importance is measured using between-cluster variance (eta-squared) and ANOVA F-statistics. These are descriptive associations, not causal effects. ARI compares cluster assignments and is independent of cluster label numbering."
+}

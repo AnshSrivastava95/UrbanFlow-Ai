@@ -1,0 +1,244 @@
+{
+    "dataset_directory": "C:\\Users\\anshs\\OneDrive\\Desktop\\urbanflow ai\\backend\\data\\raw\\bmtc_gtfs",
+    "total_files": 12,
+    "total_size_mb": 455.365,
+    "missing_required_files": [],
+    "missing_optional_files": [
+        "calendar_dates.txt",
+        "frequencies.txt",
+        "transfers.txt"
+    ],
+    "files": [
+        {
+            "file": "agency.txt",
+            "exists": true,
+            "rows": 1,
+            "columns": [
+                "agency_id",
+                "agency_name",
+                "agency_url",
+                "agency_timezone",
+                "agency_lang"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.0,
+            "errors": []
+        },
+        {
+            "file": "attributions.txt",
+            "exists": true,
+            "rows": 2,
+            "columns": [
+                "attribution_id",
+                "organization_name",
+                "is_producer",
+                "is_operator",
+                "is_authority",
+                "attribution_url"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.0,
+            "errors": []
+        },
+        {
+            "file": "calendar.txt",
+            "exists": true,
+            "rows": 61,
+            "columns": [
+                "service_id",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday",
+                "start_date",
+                "end_date"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.003,
+            "errors": []
+        },
+        {
+            "file": "fare_attributes.txt",
+            "exists": true,
+            "rows": 159,
+            "columns": [
+                "fare_id",
+                "price",
+                "currency_type",
+                "payment_method",
+                "transfers",
+                "transfer_duration",
+                "agency_id"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.004,
+            "errors": []
+        },
+        {
+            "file": "fare_rules.txt",
+            "exists": true,
+            "rows": 4076274,
+            "columns": [
+                "fare_id",
+                "route_id",
+                "origin_id",
+                "destination_id",
+                "contains_id"
+            ],
+            "missing_values": {
+                "contains_id": 4076274
+            },
+            "duplicate_rows": 0,
+            "size_mb": 159.409,
+            "errors": []
+        },
+        {
+            "file": "feed_info.txt",
+            "exists": true,
+            "rows": 1,
+            "columns": [
+                "feed_publisher_name",
+                "feed_publisher_url",
+                "feed_lang",
+                "feed_start_date",
+                "feed_end_date",
+                "feed_version",
+                "feed_contact_email",
+                "feed_contact_url"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.0,
+            "errors": []
+        },
+        {
+            "file": "routes.txt",
+            "exists": true,
+            "rows": 5063,
+            "columns": [
+                "route_id",
+                "agency_id",
+                "route_short_name",
+                "route_long_name",
+                "route_desc",
+                "route_type",
+                "route_url"
+            ],
+            "missing_values": {
+                "route_url": 5063
+            },
+            "duplicate_rows": 0,
+            "size_mb": 0.513,
+            "errors": []
+        },
+        {
+            "file": "shapes.txt",
+            "exists": true,
+            "rows": 4237296,
+            "columns": [
+                "shape_id",
+                "shape_pt_lat",
+                "shape_pt_lon",
+                "shape_pt_sequence",
+                "shape_dist_traveled"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 161.754,
+            "errors": []
+        },
+        {
+            "file": "stop_times.txt",
+            "exists": true,
+            "rows": 2238693,
+            "columns": [
+                "trip_id",
+                "arrival_time",
+                "departure_time",
+                "stop_id",
+                "stop_sequence",
+                "shape_dist_traveled",
+                "timepoint"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 125.971,
+            "errors": []
+        },
+        {
+            "file": "stops.txt",
+            "exists": true,
+            "rows": 10128,
+            "columns": [
+                "stop_id",
+                "stop_code",
+                "stop_name",
+                "stop_desc",
+                "stop_lat",
+                "stop_lon",
+                "zone_id",
+                "stop_url",
+                "location_type",
+                "parent_station",
+                "platform_code",
+                "wheelchair_boarding"
+            ],
+            "missing_values": {
+                "stop_desc": 10128,
+                "stop_url": 10128,
+                "location_type": 9936,
+                "parent_station": 9950,
+                "platform_code": 9950,
+                "wheelchair_boarding": 10128,
+                "stop_code": 192,
+                "zone_id": 14
+            },
+            "duplicate_rows": 0,
+            "size_mb": 0.663,
+            "errors": []
+        },
+        {
+            "file": "translations.txt",
+            "exists": true,
+            "rows": 9910,
+            "columns": [
+                "table_name",
+                "field_name",
+                "record_id",
+                "language",
+                "translation"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 0.75,
+            "errors": []
+        },
+        {
+            "file": "trips.txt",
+            "exists": true,
+            "rows": 69642,
+            "columns": [
+                "route_id",
+                "service_id",
+                "trip_id",
+                "trip_headsign",
+                "trip_short_name",
+                "direction_id",
+                "shape_id",
+                "wheelchair_accessible",
+                "bikes_allowed"
+            ],
+            "missing_values": {},
+            "duplicate_rows": 0,
+            "size_mb": 6.298,
+            "errors": []
+        }
+    ]
+}

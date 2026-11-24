@@ -1,0 +1,12 @@
+{
+    "unique_routes": 5063,
+    "unique_trips": 69642,
+    "unique_stops": 10128,
+    "unique_shapes": 8983,
+    "stop_time_records": 2238693,
+    "missing_route_references": 0,
+    "missing_shape_references": 0,
+    "missing_trip_references": 0,
+    "missing_stop_references": 0,
+    "invalid_arrival_times": 0
+}

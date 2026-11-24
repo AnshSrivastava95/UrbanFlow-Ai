@@ -1,0 +1,78 @@
+{
+    "routes": 5063,
+    "features": [
+        "trip_count",
+        "unique_stop_count",
+        "avg_stops_per_trip",
+        "avg_trip_duration_min",
+        "avg_departure_hour",
+        "morning_peak_share",
+        "evening_peak_share"
+    ],
+    "tested_k_values": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+    ],
+    "silhouette_sample_size": 2000,
+    "best_silhouette_configuration": {
+        "algorithm": "Hierarchical",
+        "metric": "euclidean",
+        "linkage": "average",
+        "k": 2,
+        "actual_clusters": 2,
+        "minimum_cluster_size": 4,
+        "maximum_cluster_size": 5059,
+        "silhouette": 0.6197072385129966,
+        "davies_bouldin": 0.5793076033354918,
+        "inertia": null
+    },
+    "provisional_kmeans_k": 5,
+    "kmeans_stability": [
+        {
+            "seed": 21,
+            "k": 5,
+            "adjusted_rand_index": 1.0
+        },
+        {
+            "seed": 42,
+            "k": 5,
+            "adjusted_rand_index": 1.0
+        },
+        {
+            "seed": 63,
+            "k": 5,
+            "adjusted_rand_index": 1.0
+        },
+        {
+            "seed": 84,
+            "k": 5,
+            "adjusted_rand_index": 1.0
+        },
+        {
+            "seed": 105,
+            "k": 5,
+            "adjusted_rand_index": 1.0
+        }
+    ],
+    "pca": {
+        "explained_variance_ratio": [
+            0.37006350799154564,
+            0.2607804896491269
+        ],
+        "total_explained_variance": 0.6308439976406726
+    },
+    "outputs": [
+        "clustering_comparison.csv",
+        "kmeans_route_clusters.csv",
+        "cluster_profiles.csv",
+        "pca_clusters.png"
+    ],
+    "interpretation_note": "Clusters represent scheduled route-service behaviour, not directly observed traffic congestion."
+}

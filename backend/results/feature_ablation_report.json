@@ -1,0 +1,222 @@
+{
+    "dataset_routes": 5063,
+    "baseline_silhouette": 0.3284594235824392,
+    "baseline_davies_bouldin": 0.9802045562923715,
+    "experiments": [
+        {
+            "experiment": "All seven features",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 7,
+            "silhouette": 0.3284594235824392,
+            "davies_bouldin": 0.9802045562923715,
+            "inertia": 15425.600414307177,
+            "minimum_cluster_size": 132,
+            "maximum_cluster_size": 2368,
+            "cluster_sizes": [
+                2368,
+                442,
+                388,
+                1733,
+                132
+            ]
+        },
+        {
+            "experiment": "Without trip_count",
+            "features_used": [
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.25681896554256106,
+            "davies_bouldin": 1.197719830874683,
+            "inertia": 12030.059628080819,
+            "minimum_cluster_size": 371,
+            "maximum_cluster_size": 1637,
+            "cluster_sizes": [
+                1192,
+                1428,
+                1637,
+                371,
+                435
+            ],
+            "removed_feature": "trip_count",
+            "ari_vs_baseline": 0.4760156905281904,
+            "silhouette_change": -0.07164045803987812
+        },
+        {
+            "experiment": "Without unique_stop_count",
+            "features_used": [
+                "trip_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.31555033422970447,
+            "davies_bouldin": 0.9963152062786149,
+            "inertia": 13137.371751437748,
+            "minimum_cluster_size": 135,
+            "maximum_cluster_size": 2382,
+            "cluster_sizes": [
+                393,
+                1676,
+                2382,
+                135,
+                477
+            ],
+            "removed_feature": "unique_stop_count",
+            "ari_vs_baseline": 0.8710325167642925,
+            "silhouette_change": -0.012909089352734715
+        },
+        {
+            "experiment": "Without avg_stops_per_trip",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.3173934734083902,
+            "davies_bouldin": 0.9936285090855712,
+            "inertia": 12985.319961821831,
+            "minimum_cluster_size": 134,
+            "maximum_cluster_size": 2480,
+            "cluster_sizes": [
+                391,
+                134,
+                460,
+                1598,
+                2480
+            ],
+            "removed_feature": "avg_stops_per_trip",
+            "ari_vs_baseline": 0.8885700587086172,
+            "silhouette_change": -0.011065950174048989
+        },
+        {
+            "experiment": "Without avg_trip_duration_min",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_departure_hour",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.322783496051615,
+            "davies_bouldin": 0.9772742959087262,
+            "inertia": 12628.780778159753,
+            "minimum_cluster_size": 139,
+            "maximum_cluster_size": 2146,
+            "cluster_sizes": [
+                389,
+                2146,
+                139,
+                1927,
+                462
+            ],
+            "removed_feature": "avg_trip_duration_min",
+            "ari_vs_baseline": 0.7934976173135214,
+            "silhouette_change": -0.0056759275308241874
+        },
+        {
+            "experiment": "Without avg_departure_hour",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "morning_peak_share",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.3372038079928683,
+            "davies_bouldin": 1.0088963961121347,
+            "inertia": 12253.394809858175,
+            "minimum_cluster_size": 132,
+            "maximum_cluster_size": 2123,
+            "cluster_sizes": [
+                2123,
+                1728,
+                648,
+                432,
+                132
+            ],
+            "removed_feature": "avg_departure_hour",
+            "ari_vs_baseline": 0.8038589028806945,
+            "silhouette_change": 0.008744384410429129
+        },
+        {
+            "experiment": "Without morning_peak_share",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "evening_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.2995644643157903,
+            "davies_bouldin": 1.0610450928117563,
+            "inertia": 12086.212893629792,
+            "minimum_cluster_size": 132,
+            "maximum_cluster_size": 1965,
+            "cluster_sizes": [
+                909,
+                1965,
+                1707,
+                350,
+                132
+            ],
+            "removed_feature": "morning_peak_share",
+            "ari_vs_baseline": 0.6757213940999005,
+            "silhouette_change": -0.028894959266648867
+        },
+        {
+            "experiment": "Without evening_peak_share",
+            "features_used": [
+                "trip_count",
+                "unique_stop_count",
+                "avg_stops_per_trip",
+                "avg_trip_duration_min",
+                "avg_departure_hour",
+                "morning_peak_share"
+            ],
+            "feature_count": 6,
+            "silhouette": 0.25961458791903885,
+            "davies_bouldin": 1.1624389644457689,
+            "inertia": 12154.021587669893,
+            "minimum_cluster_size": 133,
+            "maximum_cluster_size": 1707,
+            "cluster_sizes": [
+                1707,
+                1303,
+                1467,
+                453,
+                133
+            ],
+            "removed_feature": "evening_peak_share",
+            "ari_vs_baseline": 0.44678791625193576,
+            "silhouette_change": -0.06884483566340033
+        }
+    ],
+    "interpretation": "Feature ablation measures how removing one feature changes clustering quality and route assignments. It does not establish causal importance."
+}

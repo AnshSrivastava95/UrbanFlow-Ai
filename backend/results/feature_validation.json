@@ -1,0 +1,109 @@
+{
+    "total_rows": 5063,
+    "unique_route_ids": 5063,
+    "duplicate_route_ids": 0,
+    "route_type_distribution": {
+        "3": 5063
+    },
+    "features": {
+        "trip_count": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 1.0,
+            "maximum": 443.0,
+            "mean": 13.755085917440253,
+            "median": 4.0,
+            "q1": 2.0,
+            "q3": 10.0,
+            "constant": false,
+            "iqr_outlier_count": 605
+        },
+        "unique_stop_count": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 2.0,
+            "maximum": 184.0,
+            "mean": 51.489235631048786,
+            "median": 47.0,
+            "q1": 25.0,
+            "q3": 75.0,
+            "constant": false,
+            "iqr_outlier_count": 16
+        },
+        "avg_stops_per_trip": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 2.0,
+            "maximum": 95.5,
+            "mean": 30.414104031894283,
+            "median": 30.0,
+            "q1": 18.0,
+            "q3": 42.0,
+            "constant": false,
+            "iqr_outlier_count": 13
+        },
+        "avg_trip_duration_min": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 1.55,
+            "maximum": 321.4166666666667,
+            "mean": 60.35637716566436,
+            "median": 57.86666666666667,
+            "q1": 34.983333333333334,
+            "q3": 81.84027777777777,
+            "constant": false,
+            "iqr_outlier_count": 54
+        },
+        "avg_departure_hour": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 0.25,
+            "maximum": 22.25,
+            "mean": 12.612946604836557,
+            "median": 12.794604316546762,
+            "q1": 11.451851851851853,
+            "q3": 13.686458333333334,
+            "constant": false,
+            "iqr_outlier_count": 643
+        },
+        "morning_peak_share": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "mean": 0.24064942919158136,
+            "median": 0.18181818181818182,
+            "q1": 0.0,
+            "q3": 0.3333333333333333,
+            "constant": false,
+            "iqr_outlier_count": 364
+        },
+        "evening_peak_share": {
+            "valid_values": 5063,
+            "missing_values": 0,
+            "invalid_values": 0,
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "mean": 0.197234848145337,
+            "median": 0.15789473684210525,
+            "q1": 0.0,
+            "q3": 0.2727272727272727,
+            "constant": false,
+            "iqr_outlier_count": 248
+        }
+    },
+    "duration_checks": {
+        "zero_duration_routes": 0,
+        "negative_duration_routes": 0
+    },
+    "departure_hour_checks": {
+        "below_zero": 0,
+        "above_30": 0
+    }
+}

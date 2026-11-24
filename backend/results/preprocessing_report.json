@@ -1,0 +1,52 @@
+{
+    "routes": 5063,
+    "features": [
+        "trip_count",
+        "unique_stop_count",
+        "avg_stops_per_trip",
+        "avg_trip_duration_min",
+        "avg_departure_hour",
+        "morning_peak_share",
+        "evening_peak_share"
+    ],
+    "missing_values_before_imputation": {
+        "trip_count": 0,
+        "unique_stop_count": 0,
+        "avg_stops_per_trip": 0,
+        "avg_trip_duration_min": 0,
+        "avg_departure_hour": 0,
+        "morning_peak_share": 0,
+        "evening_peak_share": 0
+    },
+    "standard_scaler_mean": {
+        "trip_count": 13.755085917440253,
+        "unique_stop_count": 51.489235631048786,
+        "avg_stops_per_trip": 30.41410403189432,
+        "avg_trip_duration_min": 60.35637716566448,
+        "avg_departure_hour": 12.612946604836482,
+        "morning_peak_share": 0.24064942919158167,
+        "evening_peak_share": 0.19723484814533704
+    },
+    "standard_scaler_scale": {
+        "trip_count": 34.69903416324528,
+        "unique_stop_count": 33.42987023969608,
+        "avg_stops_per_trip": 16.94992453406403,
+        "avg_trip_duration_min": 33.66221727941446,
+        "avg_departure_hour": 2.6514424739826503,
+        "morning_peak_share": 0.274546671149079,
+        "evening_peak_share": 0.24496310257261444
+    },
+    "distance_comparison": {
+        "sample_size": 1000,
+        "euclidean_mean": 3.4422423803531412,
+        "manhattan_mean": 7.074727383390192,
+        "euclidean_median": 3.2429134774594517,
+        "manhattan_median": 6.7350484134717785,
+        "distance_correlation": 0.942048436057564
+    },
+    "outputs": [
+        "route_features_standardized.npy",
+        "route_features_robust.npy",
+        "route_features_standardized.csv"
+    ]
+}

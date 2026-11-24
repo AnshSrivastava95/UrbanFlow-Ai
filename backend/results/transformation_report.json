@@ -1,0 +1,51 @@
+{
+    "routes": 5063,
+    "feature_skewness": {
+        "trip_count": 5.870007432529023,
+        "unique_stop_count": 0.5054323324963905,
+        "avg_stops_per_trip": 0.24305735382455076,
+        "avg_trip_duration_min": 0.8934223565138565,
+        "avg_departure_hour": -0.020725734468849975,
+        "morning_peak_share": 1.4445432406696446,
+        "evening_peak_share": 1.6901941364307977
+    },
+    "log1p_features": [
+        "trip_count",
+        "morning_peak_share",
+        "evening_peak_share"
+    ],
+    "baseline_k5": {
+        "experiment": "StandardScaler",
+        "k": 5,
+        "silhouette": 0.3284594235824392,
+        "davies_bouldin": 0.9802045562923715,
+        "inertia": 15425.600414307177,
+        "minimum_cluster_size": 132,
+        "maximum_cluster_size": 2368,
+        "cluster_sizes": [
+            2368,
+            442,
+            388,
+            1733,
+            132
+        ]
+    },
+    "transformed_k5": {
+        "experiment": "Log1p_StandardScaler",
+        "k": 5,
+        "silhouette": 0.2670645720763861,
+        "davies_bouldin": 1.1976166113091609,
+        "inertia": 15901.669239546041,
+        "minimum_cluster_size": 610,
+        "maximum_cluster_size": 1469,
+        "cluster_sizes": [
+            1197,
+            1062,
+            1469,
+            610,
+            725
+        ]
+    },
+    "adjusted_rand_index_k5": 0.4500476880992228,
+    "interpretation": "Log transformation is an experimental preprocessing alternative. Model selection should consider cluster quality, size balance, stability and interpretability."
+}
